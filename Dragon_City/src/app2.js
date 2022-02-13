@@ -11,7 +11,7 @@ var HelloWorldLayer2 = cc.Layer.extend({
         //    you may modify it.
         // ask the window size
         var size = cc.winSize;
-        //cc.audioEngine.playMusic(res.Main_Music, false);
+        cc.audioEngine.playMusic(res.Main_Music, false);
         //Background field
         var x =0.5;
         var score = 0;
@@ -46,6 +46,16 @@ var HelloWorldLayer2 = cc.Layer.extend({
         var sprite_action2 = cc.RepeatForever.create(cc.MoveBy.create(0.01, cc.p(-2, 0)))
         secondview2.runAction(sprite_action2);
         }
+
+        var view = new cc.Sprite.create(res.secondview_png);
+        view.setAnchorPoint(cc.p(0.5, 0.5));
+        view.setPosition(cc.p(size.width / 2, size.height / 2));
+        this.addChild(view, 1)
+        view.setScale(1.5);
+      
+        view.setOpacity(0);
+        var view_action = cc.FadeIn.create(.1);
+        var sequence_view = cc.Sequence.create(view_action);
 
         var scorelayer = new cc.Sprite.create(res.scorelayer_png);
         scorelayer.setAnchorPoint(cc.p(-2.35,-2.55));
@@ -123,7 +133,7 @@ var HelloWorldLayer2 = cc.Layer.extend({
         flower4.runAction(flower4_action1);
         
 
-        //gold
+        //gold 1s row
 
         var gold1 = new cc.Sprite.create(res.gold_png);
         gold1.setAnchorPoint(cc.p(-4,1));
@@ -132,6 +142,23 @@ var HelloWorldLayer2 = cc.Layer.extend({
         this.addChild(gold1,1);
         var gold1_action1 = cc.RepeatForever.create(cc.MoveBy.create(0.01, cc.p(-2, 0)))
         gold1.runAction(gold1_action1);
+
+        //gold 2nd row
+        var gold2 = new cc.Sprite.create(res.gold_png);
+        gold2.setAnchorPoint(cc.p(-22,2.2));
+        gold2.setPosition(cc.p(size.width/2,size.height/2));
+        gold2.setTag(0);
+        this.addChild(gold2,1);
+        var gold2_action1 = cc.RepeatForever.create(cc.MoveBy.create(0.01, cc.p(-2, 0)))
+        gold2.runAction(gold2_action1);
+
+        var gold3 = new cc.Sprite.create(res.gold_png);
+        gold3.setAnchorPoint(cc.p(-25,2.2));
+        gold3.setPosition(cc.p(size.width/2,size.height/2));
+        gold3.setTag(0);
+        this.addChild(gold3,1);
+        var gold3_action1 = cc.RepeatForever.create(cc.MoveBy.create(0.01, cc.p(-2, 0)))
+        gold3.runAction(gold3_action1);
 
 
         //ManStone
@@ -143,6 +170,14 @@ var HelloWorldLayer2 = cc.Layer.extend({
         this.addChild(manstone1,1);
         var manstone1_action1 = cc.RepeatForever.create(cc.MoveBy.create(0.01, cc.p(-2, 0)))
         manstone1.runAction(manstone1_action1);
+
+        var manstone2 = new cc.Sprite.create(res.manstone_png);
+        manstone2.setAnchorPoint(cc.p(-38,0.7));
+        manstone2.setPosition(cc.p(size.width/2,size.height/2));
+        manstone2.setTag(0);
+        this.addChild(manstone2,1);
+        var manstone2_action1 = cc.RepeatForever.create(cc.MoveBy.create(0.01, cc.p(-2, 0)))
+        manstone2.runAction(manstone2_action1);
 
          //Fruit 1st row
 
@@ -171,7 +206,7 @@ var HelloWorldLayer2 = cc.Layer.extend({
     
       star.setOpacity(0);
       var star_action = cc.FadeIn.create(.1);
-      var star_action1 = cc.FadeOut.create(0.8);
+      var star_action1 = cc.FadeOut.create(0.5);
       var sequence_star = cc.Sequence.create(star_action, star_action1);
 
       var star1 = new cc.Sprite.create(res.star_png);
@@ -181,7 +216,7 @@ var HelloWorldLayer2 = cc.Layer.extend({
     
       star1.setOpacity(0);
       var star1_action = cc.FadeIn.create(.1);
-      var star1_action1 = cc.FadeOut.create(0.8);
+      var star1_action1 = cc.FadeOut.create(0.5);
       var sequence_star1 = cc.Sequence.create(star1_action, star1_action1);
 
       var star2 = new cc.Sprite.create(res.star_png);
@@ -191,8 +226,21 @@ var HelloWorldLayer2 = cc.Layer.extend({
     
       star2.setOpacity(0);
       var star2_action = cc.FadeIn.create(.1);
-      var star2_action1 = cc.FadeOut.create(0.8);
+      var star2_action1 = cc.FadeOut.create(0.5);
       var sequence_star2 = cc.Sequence.create(star2_action, star2_action1);
+      //Game Over Scene
+
+  
+
+      var gameover = new cc.Sprite.create(res.gameover_png);
+      gameover.setAnchorPoint(cc.p(0.5, 0.5));
+      gameover.setPosition(cc.p(size.width / 2, size.height / 2));
+      this.addChild(gameover, 1)
+    
+      gameover.setOpacity(0);
+      var gameover_action = cc.FadeIn.create(.1);
+      var gameover_action1 = cc.FadeOut.create(100);
+      var sequence_gameover = cc.Sequence.create(gameover_action, gameover_action1);
 
       var dragon_action = cc.Repeat.create(cc.MoveBy.create(0.0001,cc.p(0,30)),2);
       var dragon_action1 = cc.Repeat.create(cc.MoveBy.create(0.0001,cc.p(0,-30)),2);
@@ -356,6 +404,43 @@ var HelloWorldLayer2 = cc.Layer.extend({
                                 
                     
                         }
+                        //Gold 2nd row
+                        var rectgold2 = gold2.getBoundingBox();
+                        var rectgold3 = gold3.getBoundingBox();
+                        if(cc.rectIntersectsRect(rectgold2, rectdragon))
+                        {
+                            if(gold2.getTag()==0)
+                            {
+                                gold2.setTag(1);
+                                gold2.removeFromParent();
+                                cc.audioEngine.playEffect(res.points_Music);
+                                scoregold = scoregold+1;
+                                highscore = scorefruit+score+scoregold;
+                                cc.log(scoregold);
+                                labelhighscore.setString("" +highscore);
+                                cc.log("collided");
+                                star1.runAction(sequence_star1);
+                            }
+                                
+                    
+                        }
+                        if(cc.rectIntersectsRect(rectgold3, rectdragon))
+                        {
+                            if(gold3.getTag()==0)
+                            {
+                                gold3.setTag(1);
+                                gold3.removeFromParent();
+                                cc.audioEngine.playEffect(res.points_Music);
+                                scoregold = scoregold+1;
+                                highscore = scorefruit+score+scoregold;
+                                cc.log(scoregold);
+                                labelhighscore.setString("" +highscore);
+                                cc.log("collided");
+                                star1.runAction(sequence_star1);
+                            }
+                                
+                    
+                        }
                         //Fruit Collision
                         var rectfruit1 = fruit1.getBoundingBox();
                         if(cc.rectIntersectsRect(rectfruit1, rectdragon))
@@ -371,6 +456,45 @@ var HelloWorldLayer2 = cc.Layer.extend({
                                 labelhighscore.setString("" +highscore);
                                 cc.log("collided");
                                 star.runAction(sequence_star);
+                            }
+                                
+                    
+                        }
+                        //Manstone collision
+                        var rectmanstone = manstone1.getBoundingBox();
+                        if(cc.rectIntersectsRect(rectmanstone, rectdragon))
+                        {
+                            if(manstone1.getTag()==0)
+                            {
+                                manstone1.setTag(1);
+                                manstone1.removeFromParent();
+                                // cc.audioEngine.playEffect(res.points_Music);
+                                // scorefruit = scorefruit+1;
+                                // highscore = scorefruit+score+scoregold;
+                                // cc.log(scoregold);
+                                // labelhighscore.setString("" +highscore);
+                                view.runAction(sequence_view);
+                                secondview2.runAction(sprite_action2);
+                                gameover.runAction(sequence_gameover);
+                            }
+                                
+                    
+                        }
+                        var rectmanstone2 = manstone2.getBoundingBox();
+                        if(cc.rectIntersectsRect(rectmanstone2, rectdragon))
+                        {
+                            if(manstone2.getTag()==0)
+                            {
+                                manstone2.setTag(1);
+                                manstone2.removeFromParent();
+                                // cc.audioEngine.playEffect(res.points_Music);
+                                // scorefruit = scorefruit+1;
+                                // highscore = scorefruit+score+scoregold;
+                                // cc.log(scoregold);
+                                // labelhighscore.setString("" +highscore);
+                                view.runAction(sequence_view);
+                                secondview2.runAction(sprite_action2);
+                                gameover.runAction(sequence_gameover);
                             }
                                 
                     
@@ -400,6 +524,10 @@ var HelloWorldLayer2 = cc.Layer.extend({
     }, 
    
 });
+var stopMusic = function()
+{
+    cc.audioEngine.stopMusic();
+}
 
 function star()
 {

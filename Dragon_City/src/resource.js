@@ -10,6 +10,7 @@ var res = {
     highscore_png : "res/highscore.png",
     gold_png : "res/gold.png",
     manstone_png : "res/manstone.png",
+    gameover_png : "res/gameover.png",
     fruit_png : "res/fruit.png",
     dragon_png : "res/dragon.png",
     star_png : "res/star.png",
